@@ -14,6 +14,12 @@ runs:
       with:
         cache: npm
         cache-dependency-path: ./package-lock.json
+    - uses: actions/cache@v3
+      id: decidim-app-cache
+      with:
+        path: ./spec/decidim_dummy_app/
+        key: decidim-app-${{ github.sha }}
+        restore-keys: decidim-app-${{ github.sha }}
     - run: bundle exec rake test_app
       name: Create test app
       shell: "bash"
