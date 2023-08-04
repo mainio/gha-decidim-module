@@ -5,14 +5,17 @@ on:
         description: Enable Rubocop
         required: true
         default: true
+        type: boolean
       eslint:
         description: Enable ESLint
         required: true
         default: false
+        type: boolean
       stylelint:
         description: Enable Stylelint
         required: true
         default: false
+        type: boolean
 jobs:
   lint:
     name: Lint code
