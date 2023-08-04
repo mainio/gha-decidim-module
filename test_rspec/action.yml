@@ -3,9 +3,13 @@ description: Decidim module tests (RSpec)
 author: mainio
 inputs:
   use-cached-app:
-    description: Loads the generated test application from the cache.
+    description: Loads the generated test application from the cache also loads the DB schema for the cached app.
     required: false
     default: true
+  load-schema:
+    description: Loads the DB schema in case the database has not been initialized.
+    required: false
+    default: false
 runs:
   using: composite
   steps:
@@ -31,6 +35,7 @@ runs:
       name: Load DB schema
       shell: "bash"
       working-directory: ./spec/decidim_dummy_app/
+      if: ${{ fromJSON(inputs.use-cached-app) || fromJSON(inputs.load-schema) }}
     - run: bundle exec rspec
       name: RSpec
       shell: "bash"
