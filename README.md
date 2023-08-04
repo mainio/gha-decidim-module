@@ -19,6 +19,13 @@ The workflows that this repository provides:
 - `lint.yml` - Lints the code using different linters, such as Rubocop, ESLint
   and Stylelint.
 
+The actions that this repository provides:
+
+- `setup_app` - Sets up the test application for reuse.
+- `test_rspec` - Runs the RSpec tests for the module.
+- `test_js` - Runs the JS tests (generally Jest) for the module.
+- `lint` - Runs the different linters for the module.
+
 ## Usage
 
 This repository contains both GitHub actions as well as shared workflow
