@@ -134,7 +134,6 @@ To run the different linters (Rubocop, ESLint and Stylelint), configure the
 following workflow file within your module's repository:
 
 `.github/workflows/lint.yml`
-(replace `{MODULE_NAME}` with the name of your module)
 
 The contents of this file should look as follows:
 
