@@ -403,3 +403,9 @@ then reach a conclusion about the change before breaking all the workflows out
 there.
 
 In case you are fixing a bug, those contributions are of course always welcome.
+
+## License
+
+This repository is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+
+For further details, see the [license](LICENSE-AGPLv3.txt).
