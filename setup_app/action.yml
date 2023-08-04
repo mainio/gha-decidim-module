@@ -1,4 +1,4 @@
-name: decidim-rspec
+name: decidim-setup
 description: Decidim module setup (test app generation)
 author: mainio
 runs:
