@@ -1,0 +1,19 @@
+name: decidim-js
+description: Decidim module tests (JS)
+author: mainio
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    - uses: actions/setup-node@v3
+      with:
+        cache: npm
+        cache-dependency-path: ./package-lock.json
+    - name: Install JS dependencies
+      run: npm ci
+      shell: "bash"
+    - name: Test JS files
+      run: npm run test
+      shell: "bash"

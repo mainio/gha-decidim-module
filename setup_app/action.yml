@@ -1,5 +1,5 @@
 name: decidim-rspec
-description: Decidim module tests (RSpec)
+description: Decidim module setup (test app generation)
 author: mainio
 runs:
   using: composite
@@ -27,13 +27,3 @@ runs:
       name: Precompile assets
       working-directory: ./spec/decidim_dummy_app/
       shell: "bash"
-    - run: bundle exec rspec
-      name: RSpec
-      shell: "bash"
-    - uses: codecov/codecov-action@v3
-    - uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: screenshots
-        path: ./spec/decidim_dummy_app/tmp/screenshots
-        if-no-files-found: ignore
