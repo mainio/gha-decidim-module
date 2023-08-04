@@ -4,15 +4,15 @@ author: mainio
 inputs:
   rubocop:
     description: Enable Rubocop
-    required: true
+    required: false
     default: true
   eslint:
     description: Enable ESLint
-    required: true
+    required: false
     default: false
   stylelint:
     description: Enable Stylelint
-    required: true
+    required: false
     default: false
 runs:
   using: composite
