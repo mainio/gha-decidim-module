@@ -16,8 +16,8 @@ The workflows that this repository provides:
   repository, usually using Jest within the Decidim context.
 - `ci_rspec.yml` - Contains the workflow for running `rspec` within the module's
   repository, using RSpec.
-- `lint.yml` - Lints the code using different linters, such as Rubocop,
-  Stylelint and ESLint.
+- `lint.yml` - Lints the code using different linters, such as Rubocop, ESLint
+  and Stylelint.
 
 ## Usage
 
@@ -130,7 +130,7 @@ The `main` job takes care of installing the NPM dependencies and running
 
 #### Linting
 
-To run the different linters (Rubocop, Stylelint and ESLint), configure the
+To run the different linters (Rubocop, ESLint and Stylelint), configure the
 following workflow file within your module's repository:
 
 ```yml
