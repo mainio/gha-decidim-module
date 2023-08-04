@@ -357,7 +357,7 @@ concurrency:
 
 jobs:
   main:
-    name: Tests
+    name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
