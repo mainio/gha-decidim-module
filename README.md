@@ -321,8 +321,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: mainio/gha-decidim-module/test_js@main
-        with:
-          use-cached-app: false
 ```
 
 Note that before configuring this action, you should ensure that you have an NPM
