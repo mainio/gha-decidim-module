@@ -387,11 +387,10 @@ The action provides the following input options:
 
 ## Contributing
 
-We are welcome for contributions for these actions and shared workflow
-configurations but we use them ourselves in all of our modules. Therefore, they
-may be slightly opinionated towards the needs of the modules we are maintaining,
-although they are following similar conventions and patterns from the Decidim
-core.
+We welcome contributions for these actions and shared workflow configurations
+but we use them ourselves in all of our modules. Therefore, they may be slightly
+opinionated towards the needs of the modules we are maintaining, although they
+are following similar conventions and patterns from the Decidim core.
 
 Before introducing any new features or adding new services to the actions or
 workflow configurations, please
