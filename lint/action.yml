@@ -29,13 +29,17 @@ runs:
         cache-dependency-path: ./package-lock.json
     - name: Install JS dependencies
       run: npm ci
+      shell: "bash"
       if: ${{ fromJSON(inputs.eslint) || fromJSON(inputs.stylelint) }}
     - run: bundle exec rubocop -P
       name: Lint Ruby files
+      shell: "bash"
       if: ${{ fromJSON(inputs.rubocop) }}
     - run: npm run lint
       name: Lint JS files
+      shell: "bash"
       if: ${{ fromJSON(inputs.eslint) }}
     - run: npm run stylelint
       name: Lint SCSS files
+      shell: "bash"
       if: ${{ fromJSON(inputs.stylelint) }}

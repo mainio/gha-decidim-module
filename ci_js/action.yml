@@ -13,5 +13,7 @@ runs:
         cache-dependency-path: ./package-lock.json
     - name: Install JS dependencies
       run: npm ci
+      shell: "bash"
     - name: Test JS files
       run: npm run test
+      shell: "bash"
