@@ -27,6 +27,10 @@ runs:
     - uses: nanasess/setup-chromedriver@v2
       with:
         chromedriver-version: '115.0.5790.170' # Fix issue: https://github.com/nanasess/setup-chromedriver/issues/200
+    - run: bundle exec rails db:schema:load
+      name: Load DB schema
+      shell: "bash"
+      working-directory: ./spec/decidim_dummy_app/
     - run: bundle exec rspec
       name: RSpec
       shell: "bash"
