@@ -1,0 +1,41 @@
+name: decidim-lint
+description: Decidim module lint (Rubocop, ESLint and Stylelint)
+author: mainio
+inputs:
+  rubocop:
+    description: Enable Rubocop
+    required: true
+    default: true
+  eslint:
+    description: Enable ESLint
+    required: true
+    default: false
+  stylelint:
+    description: Enable Stylelint
+    required: true
+    default: false
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - uses: actions/setup-node@v3
+      with:
+        cache: npm
+        cache-dependency-path: ./package-lock.json
+    - name: Install JS dependencies
+      run: npm ci
+      if: ${{ fromJSON(inputs.eslint) || fromJSON(inputs.stylelint) }}
+    - run: bundle exec rubocop -P
+      name: Lint Ruby files
+      if: ${{ fromJSON(inputs.rubocop) }}
+    - run: npm run lint
+      name: Lint JS files
+      if: ${{ fromJSON(inputs.eslint) }}
+    - run: npm run stylelint
+      name: Lint SCSS files
+      if: ${{ fromJSON(inputs.stylelint) }}
