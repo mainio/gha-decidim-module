@@ -1,4 +1,18 @@
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      rubocop:
+        description: Enable Rubocop
+        required: true
+        default: true
+      eslint:
+        description: Enable ESLint
+        required: true
+        default: false
+      stylelint:
+        description: Enable Stylelint
+        required: true
+        default: false
 jobs:
   lint:
     name: Lint code
@@ -9,3 +23,7 @@ jobs:
       CI: "true"
     steps:
       - uses: mainio/gha-decidim-module/lint@main
+        with:
+          rubocop: ${{ inputs.rubocop }}
+          eslint: ${{ inputs.eslint }}
+          stylelint: ${{ inputs.stylelint }}
