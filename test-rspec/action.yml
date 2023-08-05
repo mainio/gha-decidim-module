@@ -1,4 +1,4 @@
-name: decidim-rspec
+name: "Decidim: Test RSpec"
 description: Decidim module tests (RSpec)
 author: mainio
 inputs:

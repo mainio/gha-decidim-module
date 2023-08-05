@@ -1,4 +1,4 @@
-name: decidim-lint
+name: "Decidim: Lint"
 description: Decidim module lint (Rubocop, ESLint and Stylelint)
 author: mainio
 inputs:

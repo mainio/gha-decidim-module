@@ -1,4 +1,4 @@
-name: decidim-js
+name: "Decidim: Test JavaScript"
 description: Decidim module tests (JS)
 author: mainio
 runs:

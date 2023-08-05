@@ -1,4 +1,4 @@
-name: decidim-setup
+name: "Decidim: Setup app"
 description: Decidim module setup (test app generation)
 author: mainio
 inputs:

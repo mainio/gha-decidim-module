@@ -21,9 +21,9 @@ The workflows that this repository provides:
 
 The actions that this repository provides:
 
-- `setup_app` - Sets up the test application for reuse.
-- `test_rspec` - Runs the RSpec tests for the module.
-- `test_js` - Runs the JS tests (generally Jest) for the module.
+- `setup-app` - Sets up the test application for reuse.
+- `test-rspec` - Runs the RSpec tests for the module.
+- `test-js` - Runs the JS tests (generally Jest) for the module.
 - `lint` - Runs the different linters for the module.
 
 ## Usage
@@ -190,14 +190,14 @@ services, you can also use the actions directly that are available in the
 subfolders of this repository. The following sections explain each action in
 more detail.
 
-#### Setup app (`setup_app`)
+#### Setup app (`setup-app`)
 
 > [!NOTE]
-> This action should be used in conjunction with the `test_rspec` action for it
+> This action should be used in conjunction with the `test-rspec` action for it
 > to be useful. This only generates the test application which is why it may not
 > be very useful otherwise.
 
-The `setup_app` action takes care of generating the test application (i.e.
+The `setup-app` action takes care of generating the test application (i.e.
 `spec/decidim_dummy_app`) and storing it in the GitHub actions cache for quick
 usage within your actual jobs. This is a separate action in order to make it
 quicker to run the test jobs consequently in case they fail due to a flaky test.
@@ -222,7 +222,7 @@ concurrency:
 jobs:
   build_app:
     name: Build test application
-    uses: mainio/gha-decidim-module/setup_app@main
+    uses: mainio/gha-decidim-module/setup-app@main
 ```
 
 The action provides the following input options:
@@ -232,11 +232,11 @@ The action provides the following input options:
     * This is required in case you need to use the same application across
       multiple jobs which is why it is enabled by default.
 
-#### Test RSpec (`test_rspec`)
+#### Test RSpec (`test-rspec`)
 
-The `test_rspec` action runs the RSpec tests within the module's repository.
+The `test-rspec` action runs the RSpec tests within the module's repository.
 Prior to using this action, you need to have generated the test application
-(see `setup_app` for more details) in order for the test application to exist.
+(see `setup-app` for more details) in order for the test application to exist.
 
 To use this action within your workflow, configure the following workflow file
 within your module's repository:
@@ -280,10 +280,10 @@ jobs:
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: localhost
     steps:
-      - uses: mainio/gha-decidim-module/setup_app@main
+      - uses: mainio/gha-decidim-module/setup-app@main
         with:
           use-cached-app: false
-      - uses: mainio/gha-decidim-module/test_rspec@main
+      - uses: mainio/gha-decidim-module/test-rspec@main
         with:
           use-cached-app: false
 ```
@@ -292,16 +292,16 @@ The action provides the following input options:
 
 - `use-cached-app` (boolean, default: `true`) - Defines whether the generated
   test application is used to run the specs. If used, please also define the
-  `build_app` action separately in a separate job.
+  `build-app` action separately in a separate job.
   * Note that when this configuration is used, also the database schema will be
     loaded prior to running the tests regardless of the `load-schema`
     configuration.
 - `load-schema` (boolean, default: `true`) - Defines whether the test database
   is purged and the database schema is re-loaded before running the tests.
 
-#### Test JavaScript (`test_js`)
+#### Test JavaScript (`test-js`)
 
-The `test_js` action runs the JavaScript tests within the module's repository
+The `test-js` action runs the JavaScript tests within the module's repository
 using `npm test`.
 
 To use this action within your workflow, configure the following workflow file
@@ -331,7 +331,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: mainio/gha-decidim-module/test_js@main
+      - uses: mainio/gha-decidim-module/test-js@main
 ```
 
 Note that before configuring this action, you should ensure that you have an NPM

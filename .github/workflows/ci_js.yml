@@ -8,4 +8,4 @@ jobs:
     env:
       CI: "true"
     steps:
-      - uses: mainio/gha-decidim-module/test_js@main
+      - uses: mainio/gha-decidim-module/test-js@main
