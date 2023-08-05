@@ -7,7 +7,8 @@ jobs:
     timeout-minutes: 60
     env:
       CI: "true"
-      CODECOV: "true"
+      CODECOV: "true" # legacy
+      SIMPLECOV: "true"
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: localhost
