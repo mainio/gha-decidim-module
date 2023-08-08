@@ -18,6 +18,7 @@ runs:
     - run: test -f package-lock.json && echo "available=true" || echo "available=false" >> $GITHUB_OUTPUT
       id: decidim-app-package-lock-availability
       name: Check for package-lock.json
+      shell: "bash"
     - uses: actions/setup-node@v3
       with:
         cache: npm
