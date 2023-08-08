@@ -15,10 +15,14 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+    - run: test -f package-lock.json && echo "available=true" || echo "available=false" >> $GITHUB_OUTPUT
+      id: decidim-app-package-lock-availability
+      name: Check for package-lock.json
     - uses: actions/setup-node@v3
       with:
         cache: npm
         cache-dependency-path: ./package-lock.json
+      if: ${{ fromJSON(steps.decidim-app-package-lock-availability.outputs.available) }}
     - uses: actions/cache@v3
       id: decidim-app-cache
       with:
