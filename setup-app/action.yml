@@ -23,7 +23,7 @@ runs:
       with:
         cache: npm
         cache-dependency-path: ./package-lock.json
-      if: ${{ fromJSON(env.SETUP_NODE) }}
+      if: ${{ env.SETUP_NODE == 'true' }}
     - uses: actions/cache@v3
       id: decidim-app-cache
       with:
