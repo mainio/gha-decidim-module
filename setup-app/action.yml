@@ -23,7 +23,7 @@ runs:
       with:
         cache: npm
         cache-dependency-path: ./package-lock.json
-      if: ${{ fromJSON(steps.decidim-app-package-lock-availability.outputs.available) }}
+      if: ${{ steps.decidim-app-package-lock-availability.outputs.available == 'true' }}
     - uses: actions/cache@v3
       id: decidim-app-cache
       with:
