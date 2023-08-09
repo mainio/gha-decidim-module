@@ -15,7 +15,7 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-    - run: test -f package-lock.json && echo "NODE_ENABLED=true" || echo "NODE_ENABLED=false" >> $GITHUB_STATE
+    - run: test -f package-lock.json && echo "SETUP_NODE=true" || echo "SETUP_NODE=false" >> $GITHUB_ENV
       id: decidim-app-package-lock-availability
       name: Check for package-lock.json
       shell: "bash"
@@ -23,7 +23,7 @@ runs:
       with:
         cache: npm
         cache-dependency-path: ./package-lock.json
-      if: ${{ fromJSON(env.STATE_NODE_ENABLED) }}
+      if: ${{ fromJSON(env.SETUP_NODE) }}
     - uses: actions/cache@v3
       id: decidim-app-cache
       with:
