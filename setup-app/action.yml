@@ -9,9 +9,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: sudo apt-get install imagemagick
-      name: Install ImageMagick
-      shell: "bash"
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
