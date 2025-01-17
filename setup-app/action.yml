@@ -31,7 +31,7 @@ runs:
         key: decidim-app-${{ github.sha }}
         restore-keys: decidim-app-${{ github.sha }}
       if: ${{ fromJSON(inputs.use-cached-app) }}
-    - run: apt-get install imagemagick
+    - run: sudo apt-get install imagemagick
       name: Install ImageMagick
       shell: "bash"
     - run: bundle exec rake test_app
