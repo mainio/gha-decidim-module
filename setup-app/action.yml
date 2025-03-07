@@ -15,6 +15,7 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+        rubygems: latest
     - run: (test -f package-lock.json && echo "available=true" || echo "available=false") >> $GITHUB_OUTPUT
       id: decidim-app-package-lock-availability
       name: Check for package-lock.json
