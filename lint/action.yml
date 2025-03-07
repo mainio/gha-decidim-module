@@ -23,6 +23,7 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+        rubygems: latest
       if: ${{ fromJSON(inputs.rubocop) }}
     - uses: actions/setup-node@v3
       with:
