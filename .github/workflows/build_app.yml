@@ -10,6 +10,7 @@ jobs:
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: localhost
       RUBYOPT: '-W:no-deprecated'
+      DISABLE_SPRING: "true"
     services:
       postgres:
         image: postgres:14
