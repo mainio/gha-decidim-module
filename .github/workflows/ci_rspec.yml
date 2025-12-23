@@ -27,3 +27,5 @@ jobs:
           POSTGRES_PASSWORD: postgres
     steps:
       - uses: mainio/gha-decidim-module/test-rspec@main
+        with:
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
