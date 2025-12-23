@@ -43,7 +43,10 @@ runs:
     - run: bundle exec rspec
       name: RSpec
       shell: "bash"
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: ${{ github.repository }}
     - uses: actions/upload-artifact@v4
       if: always()
       with:
