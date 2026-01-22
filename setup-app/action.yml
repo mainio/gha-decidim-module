@@ -38,6 +38,18 @@ runs:
     - run: mkdir -p ./spec/decidim_dummy_app/tmp/screenshots
       name: Create the screenshots folder
       shell: "bash"
+    - run: |
+        node -e "
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json'));
+          pkg.overrides = Object.assign(pkg.overrides || {}, { graphql: '15.10.1' });
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+        "
+        rm -rf node_modules package-lock.json
+        npm install
+      working-directory: ./spec/decidim_dummy_app
+      name: Lock graphql to version 15
+      shell: "bash"
     - run: RAILS_ENV=test bundle exec rails assets:precompile
       name: Precompile assets
       working-directory: ./spec/decidim_dummy_app/
