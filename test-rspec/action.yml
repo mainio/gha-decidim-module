@@ -10,6 +10,10 @@ inputs:
     description: Loads the DB schema in case the database has not been initialized.
     required: false
     default: false
+  db-migrate:
+    description: Runs the normal migration process instead of loading the DB from the schema.
+    required: false
+    default: false
   codecov-token:
     description: The Codecov token
     required: false
@@ -44,7 +48,14 @@ runs:
       working-directory: ./spec/decidim_dummy_app/
       env:
         RAILS_ENV: test
-      if: ${{ fromJSON(inputs.use-cached-app) || fromJSON(inputs.load-schema) }}
+      if: ${{ !fromJSON(inputs.db-migrate) && (fromJSON(inputs.use-cached-app) || fromJSON(inputs.load-schema)) }}
+    - run: bundle exec rails db:purge db:migrate
+      name: Migrate DB
+      shell: "bash"
+      working-directory: ./spec/decidim_dummy_app/
+      env:
+        RAILS_ENV: test
+      if: ${{ fromJSON(inputs.db-migrate) }}
     - run: bundle exec rspec
       name: RSpec
       shell: "bash"
