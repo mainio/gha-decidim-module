@@ -5,6 +5,7 @@ on:
         description: Runs full DB migrations instead of loading the DB from the schema.
         required: false
         default: false
+        type: boolean
     secrets:
       CODECOV_TOKEN:
         required: true
