@@ -1,5 +1,10 @@
 on:
   workflow_call:
+    inputs:
+      db-migrate:
+        description: Runs full DB migrations instead of loading the DB from the schema.
+        required: false
+        default: false
     secrets:
       CODECOV_TOKEN:
         required: true
@@ -33,3 +38,4 @@ jobs:
       - uses: mainio/gha-decidim-module/test-rspec@main
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
+          db-migrate: ${{ inputs.db-migrate }}
