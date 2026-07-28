@@ -35,7 +35,9 @@ runs:
       with:
         bundler-cache: true
         rubygems: latest
-    - uses: nanasess/setup-chromedriver@v2
+    - uses: browser-actions/setup-chrome@v2
+      with:
+        chrome-version: stable
     - run: bundle exec rails db:purge db:schema:load
       name: Load DB schema
       shell: "bash"
