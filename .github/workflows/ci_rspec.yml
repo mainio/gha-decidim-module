@@ -40,3 +40,4 @@ jobs:
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           db-migrate: ${{ inputs.db-migrate }}
+          image-processor: ${{ inputs.image-processor }}
