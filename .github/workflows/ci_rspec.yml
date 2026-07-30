@@ -6,6 +6,11 @@ on:
         required: false
         default: false
         type: boolean
+      image-processor:
+        description: "Image processor: 'mini_magick' (default) or 'vips'"
+        required: false
+        default: mini_magick
+        type: string
     secrets:
       CODECOV_TOKEN:
         required: true
