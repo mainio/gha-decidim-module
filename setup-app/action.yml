@@ -18,7 +18,7 @@ runs:
         rubygems: latest
     - run: |
           DECIDIM_VERSION=$(bundle exec ruby -e "require 'decidim/version';
-          puts DECIDIM::VERSION 2>/dev/null || echo "0.0.0")
+          puts DECIDIM::VERSION" 2>/dev/null || echo "0.0.0")
           MAJOR_MINOR=$(echo "$DECIDIM_VERSION" | cut -d. -f1,2)
           echo "Detected Decidim version: $DECIDIM_VERSION"
           if [ "$(printf '%s\n' "0.32" "MAJOR_MINOR" | sort -V | head -n1)" = "0.32" ]; then
