@@ -17,11 +17,14 @@ runs:
         bundler-cache: true
         rubygems: latest
     - run: |
-          DECIDIM_VERSION=$(bundle exec ruby -e "require 'decidim/version';
-          puts DECIDIM::VERSION" 2>/dev/null || echo "0.0.0")
+          DECIDIM_VERSION=$(grep -E '^[[:space:]]+decidim-core \([0-9]+\.[0-9]+\.[0-9]+\)' Gemfile.lock | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          if [ -z "$DECIDIM_VERSION" ]; then
+            DECIDIM_VERSION=$(grep -E '^[[:space:]]+decidim \([0-9]+\.[0-9]+\.[0-9]+\)' Gemfile.lock | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          fi
+          DECIDIM_VERSION=${DECIDIM_VERSION:-0.0.0}
           MAJOR_MINOR=$(echo "$DECIDIM_VERSION" | cut -d. -f1,2)
           echo "Detected Decidim version: $DECIDIM_VERSION"
-          if [ "$(printf '%s\n' "0.32" "MAJOR_MINOR" | sort -V | head -n1)" = "0.32" ]; then
+          if [ "$(printf '%s\n' "0.32" "$MAJOR_MINOR" | sort -V | head -n1)" = "0.32" ]; then
             echo "processor=vips" >> "$GITHUB_OUTPUT"
           else
             echo "processor=mini_magick" >> "$GITHUB_OUTPUT"
