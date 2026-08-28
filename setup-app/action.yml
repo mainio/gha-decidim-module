@@ -49,6 +49,20 @@ runs:
         cache: npm
         cache-dependency-path: ./package-lock.json
       if: ${{ fromJSON(steps.decidim-app-package-lock-availability.outputs.available) }}
+    - run: |
+        # Fixes an assets build issue with webpack, see:
+        # https://github.com/decidim/decidim/pull/17578
+        DECIDIM_PATH=$(bundle show decidim-core)
+        DECIDIM_VERSION=$(grep '^  decidim (' Gemfile.lock | head -1 | sed -E 's/.*\(~> ([^)]+)\)/\1/' | cut -d. -f2)
+        if [ "$(echo "$DECIDIM_VERSION < 0.31" | bc)" -eq 1 ]; then
+          CONFIG_PATH="lib/decidim/webpacker/webpack/"
+        else
+          CONFIG_PATH="lib/decidim/shakapacker/webpack/"
+        fi
+        sed -i -E 's/(new EsbuildPlugin\(\{)/\1\n        minify: true,/' "${DECIDIM_PATH}/${CONFIG_PATH}/custom.js"
+        sed -i 's/webpackConfig\.optimization.*//' "${DECIDIM_PATH}/${CONFIG_PATH}/webpack.config.js"
+      name: Fix assets build issues
+      shell: "bash"
     - uses: actions/cache@v3
       id: decidim-app-cache
       with:
