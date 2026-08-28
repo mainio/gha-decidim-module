@@ -59,7 +59,6 @@ runs:
         else
           CONFIG_PATH="lib/decidim/shakapacker/webpack/"
         fi
-        sed -i -E 's/(new EsbuildPlugin\(\{)/\1\n        minify: true,/' "${DECIDIM_PATH}/${CONFIG_PATH}/custom.js"
         sed -i 's/webpackConfig\.optimization.*//' "${DECIDIM_PATH}/${CONFIG_PATH}/webpack.config.js"
       name: Fix assets build issues
       shell: "bash"
