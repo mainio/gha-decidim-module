@@ -61,6 +61,10 @@ runs:
         fi
         sed -i -E 's/(new EsbuildPlugin\(\{)/\1\n        minify: true,/' "${DECIDIM_PATH}/${CONFIG_PATH}/custom.js"
         sed -i 's/webpackConfig\.optimization.*//' "${DECIDIM_PATH}/${CONFIG_PATH}/webpack.config.js"
+        echo "custom.js:"
+        cat "${DECIDIM_PATH}/${CONFIG_PATH}/custom.js"
+        echo "webpack.config.js"
+        cat "${DECIDIM_PATH}/${CONFIG_PATH}/webpack.config.js"
       name: Fix assets build issues
       shell: "bash"
     - uses: actions/cache@v3
