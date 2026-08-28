@@ -52,7 +52,7 @@ runs:
     - run: |
         # Fixes an assets build issue with webpack, see:
         # https://github.com/decidim/decidim/pull/17578
-        DECIDIM_PATH=$(bundle show decidim-core)
+        DECIDIM_PATH="$(bundle show decidim)/decidim-core"
         DECIDIM_VERSION=$(grep '^  decidim (' Gemfile.lock | head -1 | sed -E 's/.*\(~> ([^)]+)\)/\1/' | cut -d. -f1-2)
         if [ "$(echo "$DECIDIM_VERSION < 0.31" | bc)" -eq 1 ]; then
           CONFIG_PATH="lib/decidim/webpacker/webpack/"
