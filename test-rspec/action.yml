@@ -32,29 +32,7 @@ runs:
         key: decidim-app-${{ github.sha }}
         restore-keys: decidim-app-${{ github.sha }}
       if: ${{ fromJSON(inputs.use-cached-app) }}
-    - uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-        rubygems: latest
-    - run: |
-          DECIDIM_VERSION="$(bundle info decidim | head -n1 | sed -e 's/\s*\* decidim (\(.*\))/\1/' | cut -d. -f1-2)"
-          echo "Detected Decidim version: $DECIDIM_VERSION"
-          if [ "$(echo "$DECIDIM_VERSION < 0.32" | bc)" -eq 1 ]; then
-            echo "processor=mini_magick" >> "$GITHUB_OUTPUT"
-          else
-            echo "processor=vips" >> "$GITHUB_OUTPUT"
-          fi
-      id: detect-image-processor
-      name: Detect required image processor
-      shell: "bash"
-    - run: sudo apt-get update && sudo apt-get install -y imagemagick
-      name: Install ImageMagick
-      shell: "bash"
-      if: ${{steps.detect-image-processor.outputs.processor == 'mini_magick' }}
-    - run: sudo apt-get update && sudo apt-get install -y libvips-dev libvips-tools
-      name: Install libvips
-      shell: "bash"
-      if: ${{ steps.detect-image-processor.outputs.processor == 'vips' }}
+    - uses: ../setup-ruby-runtime
     - uses: browser-actions/setup-chrome@v2
       with:
         chrome-version: stable
