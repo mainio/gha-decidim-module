@@ -12,7 +12,7 @@ runs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 1
-    - uses: ../setup-ruby-runtime
+    - uses: mainio/gha-decidim-module/setup-ruby-runtime@main
     - run: (test -f package-lock.json && echo "available=true" || echo "available=false") >> $GITHUB_OUTPUT
       id: decidim-app-package-lock-availability
       name: Check for package-lock.json
