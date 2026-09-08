@@ -9,7 +9,6 @@ on:
       test-folder:
         description: The folder to run the RSpec command in.
         required: false
-        default: "."
         type: string
     secrets:
       CODECOV_TOKEN:
