@@ -6,6 +6,11 @@ on:
         required: false
         default: false
         type: boolean
+      test-folder:
+        description: The folder to run the RSpec command in.
+        required: false
+        default: "."
+        type: string
     secrets:
       CODECOV_TOKEN:
         required: true
@@ -40,3 +45,4 @@ jobs:
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           db-migrate: ${{ inputs.db-migrate }}
+          test-folder: ${{ inputs.test-folder }}

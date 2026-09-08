@@ -17,6 +17,9 @@ inputs:
   codecov-token:
     description: The Codecov token
     required: false
+  test-folder:
+    description: The folder to run the RSpec command in.
+    required: false
 runs:
   using: composite
   steps:
@@ -53,6 +56,7 @@ runs:
     - run: bundle exec rspec
       name: RSpec
       shell: "bash"
+      working-directory: ${{ inputs.test-folder || null }}
     - uses: codecov/codecov-action@v5
       with:
         token: ${{ inputs.codecov-token }}
