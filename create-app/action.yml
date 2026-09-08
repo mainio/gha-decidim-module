@@ -29,7 +29,7 @@ runs:
     - run: |
         echo "Waiting for PostgreSQL to accept connections..."
         for i in {1..30}; do
-          if docker exec my-postgres-db pg_isready -d "${{ inputs.postgres_db }}"; then
+          if docker exec tmp_postgres pg_isready -d "${{ inputs.postgres_db }}"; then
             echo "PostgreSQL is up and running!"
             exit 0
           fi
