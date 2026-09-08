@@ -6,21 +6,7 @@ jobs:
     if: "!startsWith(github.head_ref, 'chore/l10n')"
     timeout-minutes: 60
     env:
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_HOST: localhost
       RUBYOPT: '-W:no-deprecated'
       DISABLE_SPRING: "true"
-    services:
-      postgres:
-        image: postgres:14
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        env:
-          POSTGRES_PASSWORD: postgres
     steps:
       - uses: mainio/gha-decidim-module/setup-app@main
