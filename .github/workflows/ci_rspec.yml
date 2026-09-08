@@ -10,6 +10,11 @@ on:
         description: The folder to run the RSpec command in.
         required: false
         type: string
+      postgres-version:
+        description: PostgreSQL version
+        required: false
+        default: 14
+        type: string
     secrets:
       CODECOV_TOKEN:
         required: true
@@ -28,10 +33,9 @@ jobs:
       DATABASE_HOST: localhost
       RUBYOPT: '-W:no-deprecated'
       DISABLE_SPRING: "true"
-      POSTGRES_VERSION: 14
     services:
       postgres:
-        image: postgres:${{ env.POSTGRES_VERSION }}
+        image: postgres:${{ inputs.postgres-version }}
         ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
