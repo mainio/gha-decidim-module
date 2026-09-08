@@ -22,6 +22,8 @@ The workflows that this repository provides:
 The actions that this repository provides:
 
 - `setup-app` - Sets up the test application for reuse.
+- `setup-ruby-runtime` - Sets up the Ruby runtime and dependencies for RSpec
+  tests.
 - `test-rspec` - Runs the RSpec tests for the module.
 - `test-js` - Runs the JS tests (generally Jest) for the module.
 - `lint` - Runs the different linters for the module.
@@ -232,6 +234,43 @@ The action provides the following input options:
     * This is required in case you need to use the same application across
       multiple jobs which is why it is enabled by default.
 
+#### Setup Ruby runtime (`setup-ruby-runtime`)
+
+> [!NOTE]
+> This action is automatically used by the the `setup-app` and `test-rspec`
+> actions to setup the Ruby environment and required dependencies for the RSpec
+> tests. It is not necessary to run this action outside of the `test-rspec`
+> action.
+
+The `setup-ruby-runtime` action takes care of setting up the Ruby environment
+and all necessary dependencies for RSpec testing, such as the correct image
+processor based on the target application version. This is a separate action to
+make the actions using this (`setup-app` and `test-rspec`) more maintainable and
+less verbose with the dependencies setup.
+
+To use this action within your workflow, configure the following workflow file
+within your module's repository:
+
+```yml
+name: "[CI] Setup runtime"
+on:
+  push:
+    branches:
+      - develop
+      - main
+      - release/*
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  setup_runtime:
+    name: Setup test runtime environment
+    uses: mainio/gha-decidim-module/setup-ruby-runtime@main
+```
+
 #### Test RSpec (`test-rspec`)
 
 The `test-rspec` action runs the RSpec tests within the module's repository.
@@ -295,9 +334,24 @@ The action provides the following input options:
   `build-app` action separately in a separate job.
   * Note that when this configuration is used, also the database schema will be
     loaded prior to running the tests regardless of the `load-schema`
-    configuration.
+    configuration. If you want to run the full migrations, enable the
+    `db-migrate` option.
 - `load-schema` (boolean, default: `true`) - Defines whether the test database
   is purged and the database schema is re-loaded before running the tests.
+  * Note that this is skipped in case the `db-migrate` option is enabled.
+- `db-migrate` (boolean, default: `false`) - Defines whether the full DB
+  migrations are run for the test application instead of loading only the schema
+  generated during the `setup-app` phase. This is slower than the default
+  behavior but can be useful if the target module or application has custom
+  migrations that would not be dumped to the Rails `db/schema.rb` file (such as
+  DB rules or triggers).
+- `codecov-token` (string) - Defines the `token` input for
+  `codecov/codecov-action`. Used for uploading the coverage reports to Codecov.
+  * This is passed through the secrets by the `ci_rspec.yml` workflow.
+- `test-folder` (string) - An optional folder within the repository where to run
+  the tests at. By default, the tests are run at the root of the repository.
+  This can be useful when the repository contains multiple modules and the tests
+  are separated for each module e.g. through a matrix strategy.
 
 #### Test JavaScript (`test-js`)
 
