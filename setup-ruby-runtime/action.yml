@@ -8,7 +8,7 @@ runs:
       with:
         bundler-cache: true
         rubygems: latest
-    - uses: mainio/gha-decidim-module/gem-version@next
+    - uses: mainio/gha-decidim-module/gem-version@main
       id: decidim-version
       with:
         gem: decidim

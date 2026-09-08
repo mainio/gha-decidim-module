@@ -26,7 +26,7 @@ runs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 1
-    - uses: mainio/gha-decidim-module/gem-version@next
+    - uses: mainio/gha-decidim-module/gem-version@main
       id: decidim-version
       with:
         gem: decidim
@@ -38,7 +38,7 @@ runs:
         path: ./spec/decidim_dummy_app/
         key: decidim-app-${{ steps.decidim-version.outputs.version }}
       if: ${{ fromJSON(inputs.use-cached-app) }}
-    - uses: mainio/gha-decidim-module/setup-ruby-runtime@next
+    - uses: mainio/gha-decidim-module/setup-ruby-runtime@main
     - uses: browser-actions/setup-chrome@v2
       with:
         chrome-version: stable

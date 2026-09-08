@@ -17,4 +17,4 @@ jobs:
       DISABLE_SPRING: "true"
       POSTGRES_VERSION: ${{ inputs.postgres-version }}
     steps:
-      - uses: mainio/gha-decidim-module/setup-app@next
+      - uses: mainio/gha-decidim-module/setup-app@main
