@@ -29,21 +29,7 @@ runs:
         key: decidim-app-${{ github.sha }}
         restore-keys: decidim-app-${{ github.sha }}
       if: ${{ fromJSON(inputs.use-cached-app) }}
-    # We use custom application generation because we do not want to create the
-    # database at this stage to speed up the app generation process. The
-    # database needs to be created only for the specs.
-    - run: |
-        DECIDIM_APP_NAME="$(basename $(pwd) | sed 's/[A-Z]/_\L&/g; s/^_//' | tr '-' '_')"
-        rm -rf spec/decidim_dummy_app
-        bundle exec decidim spec/decidim_dummy_app \
-          --app_name "${DECIDIM_APP_NAME}_test_app" \
-          --path "../.." \
-          --skip_gemfile \
-          --skip_spring \
-          --demo \
-          --force_ssl "false" \
-          --locales en,ca,es
-        cd spec/decidim_dummy_app
+    - run: bundle exec rake test_app
       name: Create test app
       shell: "bash"
     - run: mkdir -p ./spec/decidim_dummy_app/tmp/screenshots
