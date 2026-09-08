@@ -9,7 +9,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 1
     - uses: mainio/gha-decidim-module/setup-ruby-runtime@main
@@ -17,12 +17,12 @@ runs:
       id: decidim-app-package-lock-availability
       name: Check for package-lock.json
       shell: "bash"
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v7
       with:
         cache: npm
         cache-dependency-path: ./package-lock.json
       if: ${{ fromJSON(steps.decidim-app-package-lock-availability.outputs.available) }}
-    - uses: actions/cache@v3
+    - uses: actions/cache@v6
       id: decidim-app-cache
       with:
         path: ./spec/decidim_dummy_app/
