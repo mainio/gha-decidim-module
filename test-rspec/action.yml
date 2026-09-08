@@ -35,7 +35,7 @@ runs:
         key: decidim-app-${{ github.sha }}
         restore-keys: decidim-app-${{ github.sha }}
       if: ${{ fromJSON(inputs.use-cached-app) }}
-    - uses: mainio/gha-decidim-module/setup-ruby-runtime@main
+    - uses: mainio/gha-decidim-module/setup-ruby-runtime@next
     - uses: browser-actions/setup-chrome@v2
       with:
         chrome-version: stable

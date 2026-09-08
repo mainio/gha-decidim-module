@@ -28,9 +28,10 @@ jobs:
       DATABASE_HOST: localhost
       RUBYOPT: '-W:no-deprecated'
       DISABLE_SPRING: "true"
+      POSTGRES_VERSION: 14
     services:
       postgres:
-        image: postgres:14
+        image: postgres:${{ env.POSTGRES_VERSION }}
         ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
@@ -38,9 +39,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
     steps:
-      - uses: mainio/gha-decidim-module/test-rspec@main
+      - uses: mainio/gha-decidim-module/test-rspec@next
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           db-migrate: ${{ inputs.db-migrate }}

@@ -8,8 +8,12 @@ runs:
       with:
         bundler-cache: true
         rubygems: latest
+    - uses: mainio/gha-decidim-module/gem-version@next
+      id: decidim-version
+      with:
+        gem: decidim
     - run: |
-          DECIDIM_VERSION="$(bundle info decidim | head -n1 | sed -e 's/\s*\* decidim (\(.*\))/\1/' | cut -d. -f1-2)"
+          DECIDIM_VERSION="${{ steps.decidim-version.outputs.version }} | cut -d. -f1-2"
           echo "Detected Decidim version: $DECIDIM_VERSION"
           if [ "$(echo "$DECIDIM_VERSION < 0.32" | bc)" -eq 1 ]; then
             echo "processor=mini_magick" >> "$GITHUB_OUTPUT"

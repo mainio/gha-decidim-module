@@ -313,7 +313,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
     env:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres

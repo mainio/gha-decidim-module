@@ -1,0 +1,26 @@
+name: "Gem version"
+description: Determine the provided gem version
+author: mainio
+inputs:
+  gem:
+    description: The name of the gem to look for.
+    required: true
+outputs:
+  version:
+    description: The extracted version number of the gem
+    value: ${{ steps.extract.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - run: |
+        GEM="${{ inputs.gem }}"
+        VERSION=$(sed -nE "s/^ {4}$GEM \(([^0-9]*[0-9.]+[^)]*)\)/\1/p; /^ {4}$GEM \(/q" Gemfile.lock)
+        if [ -z "$VERSION" ]; then
+          echo "::error::Gem '$GEM' not found in Gemfile.lock"
+          exit 1
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Found $GEM version: $VERSION"
+      id: extract
+      name: Extract the gem version
+      shell: "bash"
