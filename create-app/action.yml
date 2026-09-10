@@ -50,7 +50,6 @@ runs:
         DATABASE_PASSWORD: postgres
         DATABASE_HOST: localhost
       shell: "bash"
-      if: ${{ steps.decidim-app-cache.outputs.cache-hit != 'true' }}
     - run: mkdir -p ./spec/decidim_dummy_app/tmp/screenshots
       name: Create the screenshots folder
       shell: "bash"
