@@ -1,11 +1,6 @@
 name: "Decidim: Create app"
 description: Decidim module setup (test app creation)
 author: mainio
-inputs:
-  use-cached-app:
-    description: Adds the generated test application to the cache.
-    required: false
-    default: true
 runs:
   using: composite
   steps:
