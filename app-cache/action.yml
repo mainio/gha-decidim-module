@@ -1,0 +1,25 @@
+name: "App cache"
+description: Creates a unique cache key for the app and sets up the cache action
+author: mainio
+outputs:
+  key:
+    description: The generated cache key for the app
+    value: ${{ steps.generate.outputs.key }}
+  cache-hit:
+    description: A boolean value to indicate an exact match was found for the primary key
+    value: $ {{ steps.cache.outputs.cache-hit }}
+runs:
+  using: composite
+  steps:
+    - run: |
+        HASH_VALUE="${{ hashFiles('**/Gemfile.lock', '**/db/migrate/**') }}"
+        echo "key=decidim-app-${HASH_VALUE}" >> $GITHUB_OUTPUT
+      id: generate
+      name: Generate the cache key
+      shell: "bash"
+    - uses: actions/cache@v6
+      id: cache
+      with:
+        path: ./spec/decidim_dummy_app/
+        key: ${{ steps.generate.outputs.key }}
+      if: ${{ fromJSON(inputs.use-cached-app) }}

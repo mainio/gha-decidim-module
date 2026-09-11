@@ -12,13 +12,8 @@ runs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 1
-    - uses: mainio/gha-decidim-module/app-cache-key@main
-      id: cache-key
-    - uses: actions/cache@v6
+    - uses: mainio/gha-decidim-module/app-cache@main
       id: decidim-app-cache
-      with:
-        path: ./spec/decidim_dummy_app/
-        key: ${{ steps.cache-key.outputs.key }}
       if: ${{ fromJSON(inputs.use-cached-app) }}
     - uses: mainio/gha-decidim-module/create-app@main
       if: ${{ steps.decidim-app-cache.outputs.cache-hit != 'true' }}
