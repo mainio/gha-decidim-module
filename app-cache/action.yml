@@ -22,4 +22,3 @@ runs:
       with:
         path: ./spec/decidim_dummy_app/
         key: ${{ steps.generate.outputs.key }}
-      if: ${{ fromJSON(inputs.use-cached-app) }}
