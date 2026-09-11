@@ -7,7 +7,7 @@ outputs:
     value: ${{ steps.generate.outputs.key }}
   cache-hit:
     description: A boolean value to indicate an exact match was found for the primary key
-    value: $ {{ steps.cache.outputs.cache-hit }}
+    value: ${{ steps.cache.outputs.cache-hit }}
 runs:
   using: composite
   steps:
