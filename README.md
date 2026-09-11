@@ -21,12 +21,24 @@ The workflows that this repository provides:
 
 The actions that this repository provides:
 
-- `setup-app` - Sets up the test application for reuse.
-- `setup-ruby-runtime` - Sets up the Ruby runtime and dependencies for RSpec
-  tests.
-- `test-rspec` - Runs the RSpec tests for the module.
-- `test-js` - Runs the JS tests (generally Jest) for the module.
-- `lint` - Runs the different linters for the module.
+- Main actions
+  * `setup-app` - Creates, configures and caches the test application for reuse.
+  * `test-rspec` - Runs the RSpec tests for the module.
+  * `test-js` - Runs the JS tests (generally Jest) for the module.
+  * `lint` - Runs the different linters for the module.
+- Support actions
+  * `app-cache` - Caches and restores the generated test application with a
+    unique cache key.
+  * `create-app` - Creates and sets up the test application for reuse.
+  * `gem-version` - Fetches a gem version from the repository's `Gemfile.lock`
+    for configuring the application environment accordingly for different
+    versions.
+  * `setup-app` - Combines `app-cache` and `create-app` actions by utilizing the
+    `app-cache` action to check if the application has already been cached and
+    if not, calls `create-app` to generate the application which is cached by
+    the other action after creation.
+  * `setup-ruby-runtime` - Sets up the Ruby runtime and dependencies for RSpec
+    tests.
 
 ## Usage
 
@@ -202,13 +214,14 @@ more detail.
 The `setup-app` action takes care of generating the test application (i.e.
 `spec/decidim_dummy_app`) and storing it in the GitHub actions cache for quick
 usage within your actual jobs. This is a separate action in order to make it
-quicker to run the test jobs consequently in case they fail due to a flaky test.
+quicker to run the test jobs consequently in case they fail due to a flaky test
+or when there are multiple action runs during the same cache window.
 
 To use this action within your workflow, configure the following workflow file
 within your module's repository:
 
 ```yml
-name: "[CI] Setup"
+name: "[CI] Setup test app"
 on:
   push:
     branches:
@@ -233,43 +246,6 @@ The action provides the following input options:
   test application is stored in a cache.
     * This is required in case you need to use the same application across
       multiple jobs which is why it is enabled by default.
-
-#### Setup Ruby runtime (`setup-ruby-runtime`)
-
-> [!NOTE]
-> This action is automatically used by the the `setup-app` and `test-rspec`
-> actions to setup the Ruby environment and required dependencies for the RSpec
-> tests. It is not necessary to run this action outside of the `test-rspec`
-> action.
-
-The `setup-ruby-runtime` action takes care of setting up the Ruby environment
-and all necessary dependencies for RSpec testing, such as the correct image
-processor based on the target application version. This is a separate action to
-make the actions using this (`setup-app` and `test-rspec`) more maintainable and
-less verbose with the dependencies setup.
-
-To use this action within your workflow, configure the following workflow file
-within your module's repository:
-
-```yml
-name: "[CI] Setup runtime"
-on:
-  push:
-    branches:
-      - develop
-      - main
-      - release/*
-  pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
-
-jobs:
-  setup_runtime:
-    name: Setup test runtime environment
-    uses: mainio/gha-decidim-module/setup-ruby-runtime@main
-```
 
 #### Test RSpec (`test-rspec`)
 
@@ -449,6 +425,83 @@ The action provides the following input options:
   run using `npm run lint`.
   * Before enabling this option, make sure that `npm run stylelint` succeeds
     without errors within your module's repository.
+
+### Support actions
+
+The following actions are supportive actions that do not need to be directly
+configured for the repository. These actions are used by the other actions
+within this repository for convenience.
+
+#### Setup app cache (`app-cache`)
+
+Generates a unique cache key for the test application by hashing the
+`Gemfile.lock` file(s) and all files under `**/db/migrate` directories of the
+repository. After that, sets up the `actions/cache` action with generated key
+and the correct path to the folder to be cached (the test application folder).
+
+The action provides the following output strings:
+
+- `key` - The generated cache key.
+- `cache-hit` - A boolean string indicating whether there was a cache hit or
+  not.
+  * `"true"` - there was a cache hit
+  * `"false"` - there was no cache hit
+
+This action is a supportive action that should not be used directly in the
+repository. Instead, use the `setup-app` or `test-rspec` actions utilizing this.
+
+#### Create app (`create-app`)
+
+> [!NOTE]
+> This action is used by the `setup-app` action that first checks whether the
+> app has already been cached and whether it requires to be created.
+
+The `create-app` action takes care of generating the test application (i.e.
+`spec/decidim_dummy_app`). This is a separate action to separate the logic for
+generating the whole application from other necessary actions that need to
+happen during the application building.
+
+This action is a supportive action that should not be used directly in the
+repository. Instead, use the `setup-app` action if you need to setup and cache
+the application for reuse.
+
+#### Gem version (`gem-version`)
+
+Parses the `Gemfile.lock` at the root of the repository to determine the
+installed version of the gem provided with the `gem` input option.
+
+The action provides the following input options:
+
+- `gem` (string) - Defines the name of the gem to look for from `Gemfile.lock`.
+
+The action provides the following output strings:
+
+- `version` - The installed version of the provided gem.
+
+This action is a supportive action that does not need to be used directly within
+the repository. This is used by the other actions for convenience.
+
+#### Setup Ruby runtime (`setup-ruby-runtime`)
+
+> [!NOTE]
+> This action is automatically used by the the `setup-app` and `test-rspec`
+> actions to setup the Ruby environment and required dependencies for the RSpec
+> tests. It is not necessary to run this action outside of the `test-rspec`
+> action.
+
+The `setup-ruby-runtime` action takes care of setting up the Ruby environment
+and all necessary dependencies for RSpec testing, such as the correct image
+processor based on the target application version. This is a separate action to
+make the actions using this (`setup-app` and `test-rspec`) more maintainable and
+less verbose with the dependencies setup.
+
+The action also caches the dependencies for the detected image processor in
+order to install it quicker during the application setup at the `test-rspec`
+action. Especially downloading the dependencies for `libvips` can be slow
+sometimes which makes the application setup slower.
+
+This action is a supportive action that should not be used directly in the
+repository. Instead, use the `setup-app` or `test-rspec` actions utilizing this.
 
 ## Contributing
 
