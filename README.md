@@ -65,7 +65,7 @@ For all configured workflows, the following configurations are common:
   commits, this would cancel the previous runs when new commits are pushed to
   the same branch.
 
-#### Runnin RSpec
+#### Running RSpec
 
 To run the RSpec tests, configure the following workflow file within your
 module's repository:
