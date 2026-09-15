@@ -16,34 +16,16 @@ runs:
           DECIDIM_VERSION=$(echo "${{ steps.decidim-version.outputs.version }}" | cut -d. -f1-2)
           echo "Detected Decidim version: $DECIDIM_VERSION"
           if [ "$(echo "$DECIDIM_VERSION < 0.32" | bc)" -eq 1 ]; then
-            CACHE_KEY="${ImageOS}-ruby-runtime-apt-cache-imagemagick"
             echo "processor=mini_magick" >> "$GITHUB_OUTPUT"
-            echo "packages=imagemagick" >> "$GITHUB_OUTPUT"
           else
-            CACHE_KEY="${ImageOS}-ruby-runtime-apt-cache-vips"
             echo "processor=vips" >> "$GITHUB_OUTPUT"
-            echo "packages=libvips-dev libvips-tools" >> "$GITHUB_OUTPUT"
           fi
-          echo "cache-key=${CACHE_KEY}" >> "$GITHUB_OUTPUT"
-          echo "cache-path=${{ runner.temp }}/${CACHE_KEY}" >> "$GITHUB_OUTPUT"
       id: detect-image-processor
       name: Detect required image processor
       shell: "bash"
-    - uses: actions/cache@v6
-      id: apt-cache
-      with:
-        path: ${{ steps.detect-image-processor.outputs.cache-path }}
-        key: ${{ steps.detect-image-processor.outputs.cache-key }}
-    - run: |
-        mkdir -p "${{ steps.detect-image-processor.outputs.cache-path }}/partial"
-        sudo chown -R _apt "${{ steps.detect-image-processor.outputs.cache-path }}"
-        sudo apt-get update && sudo apt-get install -y --download-only \
-          -o Dir::Cache::archives="${{ steps.detect-image-processor.outputs.cache-path }}" \
-          ${{ steps.detect-image-processor.outputs.packages }}
-        sudo chown -R runner:docker "${{ steps.detect-image-processor.outputs.cache-path }}"
-      name: Download image processor packages
+    - run: sudo apt-get update && sudo apt-get install -y imagemagick
+      name: Install ImageMagick
       shell: "bash"
-      if: ${{ steps.apt-cache.outputs.cache-hit != 'true' }}
-    - run: sudo dpkg -i ${{ steps.detect-image-processor.outputs.cache-path }}/*.deb || sudo apt-get install -f -y
-      name: Install image processor APT packages
-      shell: "bash"
+      if: ${{ steps.detect-image-processor.outputs.processor == 'mini_magick' }}
+    - uses: mainio/gha-libvips@main
+      if: ${{ steps.detect-image-processor.outputs.processor == 'vips' }}
