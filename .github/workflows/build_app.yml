@@ -1,15 +1,15 @@
 on:
   workflow_call:
     inputs:
-      postgres-version:
-        description: PostgreSQL version
+      runner:
+        description: GitHub Actions runner
         required: false
-        default: 14
+        default: ubuntu-latest
         type: string
 jobs:
   build_app:
     name: Build app
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner }}
     if: "!startsWith(github.head_ref, 'chore/l10n')"
     timeout-minutes: 60
     env:
