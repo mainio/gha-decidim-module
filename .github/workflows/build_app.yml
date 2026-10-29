@@ -6,6 +6,11 @@ on:
         required: false
         default: ubuntu-latest
         type: string
+      postgres-version:
+        description: PostgreSQL version
+        required: false
+        default: 14
+        type: string
 jobs:
   build_app:
     name: Build app
