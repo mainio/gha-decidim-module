@@ -16,10 +16,15 @@ on:
         required: false
         default: false
         type: boolean
+      runner:
+        description: GitHub Actions runner
+        required: false
+        default: ubuntu-latest
+        type: string
 jobs:
   lint:
     name: Lint code
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner }}
     if: "!startsWith(github.head_ref, 'chore/l10n')"
     timeout-minutes: 60
     env:
