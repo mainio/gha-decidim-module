@@ -15,6 +15,11 @@ on:
         required: false
         default: 14
         type: string
+      runner:
+        description: GitHub Actions runner
+        required: false
+        default: ubuntu-latest
+        type: string
     secrets:
       CODECOV_TOKEN:
         required: true
